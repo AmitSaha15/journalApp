@@ -11,13 +11,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.ArrayList;
 import java.util.List;
 
-@Document(collection = "journal_entries")
+@Document(collection = "users")
 @Data
 public class User {
     @Id
     private ObjectId id;
 
-    @Indexed(unique = true)
+    @Indexed(unique = true) //userName should be unique
     @NonNull
     private String userName;
 

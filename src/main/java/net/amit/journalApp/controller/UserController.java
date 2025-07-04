@@ -22,13 +22,18 @@ public class UserController {
     }
 
     @PostMapping
-    public void createUser(@RequestBody User user){
-        userService.saveEntry(user);
+    public ResponseEntity<?> createUser(@RequestBody User user){
+        try{
+            userService.saveEntry(user);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @PutMapping
-    public ResponseEntity<?> updateUser(@RequestBody User user){
-        User userInDB = userService.findByUserName(user.getUserName());
+    @PutMapping("/{userName}")
+    public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable String userName){
+        User userInDB = userService.findByUserName(userName);
         if(userInDB != null){
             userInDB.setUserName(user.getUserName());
             userInDB.setPassword(user.getPassword());
