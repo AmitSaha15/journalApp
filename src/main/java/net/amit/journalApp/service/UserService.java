@@ -1,6 +1,5 @@
 package net.amit.journalApp.service;
 
-import net.amit.journalApp.entity.JournalEntry;
 import net.amit.journalApp.entity.User;
 import net.amit.journalApp.repository.UserRepo;
 import org.bson.types.ObjectId;
@@ -21,7 +20,7 @@ public class UserService {
 
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public void saveEntry(User user){
+    public void saveUser(User user){
         userRepo.save(user);
     }
 
