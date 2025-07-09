@@ -27,4 +27,6 @@ public class User {
     // @DBRef is used for creating references between documents in your MongoDB database
     @DBRef
     List<JournalEntry> journalEntries = new ArrayList<>();
+
+    private List<String> roles;
 }
