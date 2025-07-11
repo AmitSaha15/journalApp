@@ -30,6 +30,17 @@ public class UserService {
         userRepo.save(user);
     }
 
+    public boolean saveAdmin(User user){
+        try {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setRoles(Arrays.asList("USER","ADMIN"));
+            userRepo.save(user);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public List<User> getAll(){
         return userRepo.findAll();
     }
