@@ -1,5 +1,6 @@
 package net.amit.journalApp.service;
 
+import lombok.extern.slf4j.Slf4j;
 import net.amit.journalApp.entity.User;
 import net.amit.journalApp.repository.UserRepo;
 import org.bson.types.ObjectId;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
+@Slf4j
 public class UserService {
 
     @Autowired
@@ -20,14 +22,27 @@ public class UserService {
 
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+//    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+//    instead of this we will use @Slf4j annotation
+
     public void saveUser(User user){
         userRepo.save(user);
     }
 
-    public void saveNewUser(User user){
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Arrays.asList("USER"));
-        userRepo.save(user);
+    public boolean saveNewUser(User user){
+        try {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setRoles(Arrays.asList("USER"));
+            userRepo.save(user);
+            return true;
+        } catch (Exception e) {
+            log.error("Error occurred for : {}", user.getUserName(), e);
+            log.info("Problem in saveNewUser function.");
+            log.warn("Problem in saveNewUser function.");
+            log.debug("Problem in saveNewUser function."); // need customization to enable debug and trace
+            log.trace("Problem in saveNewUser function.");
+            return false;
+        }
     }
 
     public boolean saveAdmin(User user){
