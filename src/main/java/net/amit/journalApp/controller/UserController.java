@@ -1,8 +1,12 @@
 package net.amit.journalApp.controller;
 
+import net.amit.journalApp.api.response.QuoteResponse;
+import net.amit.journalApp.api.response.WeatherResponse;
 import net.amit.journalApp.entity.User;
 import net.amit.journalApp.repository.UserRepo;
+import net.amit.journalApp.service.QuoteService;
 import net.amit.journalApp.service.UserService;
+import net.amit.journalApp.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +24,11 @@ public class UserController {
     private UserService userService;
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private WeatherService weatherService;
+    @Autowired
+    private QuoteService quoteService;
 
     @PutMapping
     public ResponseEntity<?> updateUser(@RequestBody User user){
@@ -40,5 +49,19 @@ public class UserController {
         userRepo.deleteByUserName(authentication.getName());
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> greeting(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        WeatherResponse weatherResponse = weatherService.getWeather("Kolkata");
+        QuoteResponse quoteResponse = quoteService.getQuote();
+        String greeting = "";
+
+        if(weatherResponse != null && quoteResponse != null){
+            greeting = ", Weather feels like " + weatherResponse.getCurrent().getFeelsLike() + ". Your quote of the day: " + quoteResponse.getQuote();
+        }
+        return new ResponseEntity<>("Hi "+ authentication.getName() + greeting,HttpStatus.OK);
     }
 }

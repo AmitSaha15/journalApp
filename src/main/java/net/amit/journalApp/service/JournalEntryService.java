@@ -1,5 +1,6 @@
 package net.amit.journalApp.service;
 
+import lombok.extern.slf4j.Slf4j;
 import net.amit.journalApp.entity.JournalEntry;
 import net.amit.journalApp.entity.User;
 import net.amit.journalApp.repository.JournalEntryRepo;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
+@Slf4j
 public class JournalEntryService {
 
     @Autowired
@@ -58,6 +60,7 @@ public class JournalEntryService {
                 journalEntryRepo.deleteById(id);
             }
         } catch (Exception e) {
+            log.error("Error ", e);
             throw new RuntimeException("An error occurred while deleting the entry.",e);
         }
         return removed;
