@@ -8,10 +8,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 
-@Component
+@Service
 public class QuoteService {
 
     @Value("${api-keys.ninja-quotes}")
